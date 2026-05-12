@@ -1,6 +1,15 @@
 import random
 import time
 
+def input(*args, **kwargs):
+    texto = " ".join(map(str, args))
+
+    for letra in texto:
+        __builtins__.print(letra, end="", flush=True)
+        time.sleep(0.05)
+    
+    return __builtins__.input()
+
 def print(*args, **kwargs):
 
     texto = " ".join(map(str, args))
