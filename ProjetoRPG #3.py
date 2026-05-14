@@ -159,37 +159,48 @@ elif classe == "arqueiro":
 print("-"*150)
 
 # Treinamento de 3 Anos
-
-import time
-train = 3
-for i in range(3):
-    print(f"Treinando... {train} Anos Restantes")
-    train -= 1
-    time.sleep(1.5)
-    print()
+print()
+print("Você está pensando em Treinar por 3 Anos...")
+print()
 
 if nível == 100:
-    print("Você já é um Aventureiro Lendário, Não Precisa Treinar!")
+    print("Porém, Você já é um Aventureiro Lendário, Não Precisa Treinar!")
+    print("Seus Atributos estão:")
     print("-"*150)
 
 elif nível >= 85:
-    print("Você Virou um Aventureiro Lendário, Agora você é Nível 100 (MÁX)!")
-    print("-"*150)
+    import time
+    train = 3
+    for i in range(3):
+        print(f"Treinando... {train} Anos Restantes")
+        train -= 1
+        time.sleep(1.5)
+        if train <= 0:
+            print()
+            print("Você Virou um Aventureiro Lendário, Agora você é Nível 100 (MÁX)!")
+            print("-"*150)
 
 else:
-    nível += 15
-    print("Durante seu Treinamento, Você Subiu de Nível, Parabéns!!!")
-    print(f"{azul}Novo Nível: {nível}{branco}")
-    print("Esses são seus novos atributos!: ")
-    print("-"*150)
+    import time
+    train = 3
+    for i in range(3):
+        print(f"Treinando... {train} Anos Restantes")
+        train -= 1
+        time.sleep(1.5)
+        if train <= 0:
+            nível += 15
+            print("Durante seu Treinamento, Você Subiu de Nível, Parabéns!!!")
+            print(f"{azul}Novo Nível: {nível}{branco}")
+            print("Esses são seus novos atributos!: ")
+            print("-"*150)
 
-    hp = nível * 50
-    mana = nível * 75
+            hp = nível * 50
+            mana = nível * 75
 
-    print(f"{azul}Hp: {hp}")
-    print(f"{verde1}Mana: {mana}")
-    print(f"{amarelo}Dinheiro: {reais}")
-    print(f"{branco}-"*150)
+print(f"{azul}Hp: {hp}")
+print(f"{verde1}Mana: {mana}")
+print(f"{amarelo}Dinheiro: {reais}{branco}")
+print("-"*150)
 time.sleep(2)
 
 def ataque_monstro(bosshp ,hp, nível):
@@ -574,7 +585,7 @@ while bosshp > 0 and hp > 0:
             print("-"*150)
 
         else:
-            hp *= 1.5
+            hp =+ 200
 
             if hp > hp_max:
                 hp = hp_max
