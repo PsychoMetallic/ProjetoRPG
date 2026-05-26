@@ -35,20 +35,24 @@ amarelo = "\033[33m"
 roxo = "\033[35m"
 vermelho = "\033[31m"
 verde1 = "\033[92m"
+cinza = "\033[90m"
 
 # Informações Iniciais
 
 print("-"*140)
-nome = input("Qual é o Seu Nome? ")
+nome = input('''Qual é o Seu Nome?
+>> ''')
 print("-"*140)
 
 print("Escolha sua Classe, Por Favor!")
-classe = input("Mago / Executor / Guerreiro / Arqueiro: ").lower()
+classe = input('''Mago / Executor / Guerreiro / Arqueiro
+>> ''').lower()
 print("-"*140)
 
 while classe != "mago" and classe != "executor" and classe != "guerreiro" and classe != "arqueiro":
-    type("Resposta Inválida! Tente Novamente!")
-    classe = input("Mago / Executor / Guerreiro / Arqueiro: ").lower()
+    print("Resposta Inválida! Tente Novamente!")
+    classe = input('''Mago / Executor / Guerreiro / Arqueiro
+>> ''').lower()
     print("-"*140)
     
 print("Classe Escolhida:", classe.capitalize())
@@ -57,7 +61,8 @@ print()
 print("Olá", nome.capitalize(), "ficamos felizes por ter Entrado em Nossa Guilda!")
 print("-"*140)
 
-nível = int(input("Qual é o seu Nível? "))
+nível = int(input('''Qual é o seu Nível?
+>> '''))
 
 if nível >= 1 and nível <=100:
     print()
@@ -73,7 +78,8 @@ else:
     print("O Nível Máximo é 100! sua Punição por ter Mentido é, seu Nível será:", nível)
 
 print()
-print("Esses são seus atributos!: ")
+print("Esses são seus atributos!")
+enter = input("Aperte ENTER Para Continuar: ")
 print("-"*140)
 
 hp = nível * 50
@@ -90,7 +96,8 @@ print("-"*140)
 pocao = 50
 
 print(f"{amarelo}Comerciante:{branco} Bem vindo a Loja da Guilda, temos essa {vermelho}Poção{branco} que custa R${pocao}!")
-loja = input("Você quer Comprar? Y/N: ").strip().lower() in ["sim", "s", "y"]
+loja = input('''Você quer Comprar? Y/N:
+>> ''').strip().lower() in ["sim", "s", "y"]
 print("-"*140)
 
 qtd = 0
@@ -102,7 +109,8 @@ if loja:
           
     
     else:
-        qtd = int(input(f"{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja? "))
+        qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
+>> '''))
         venda = qtd * pocao
         
         print("-"*140)
@@ -116,21 +124,22 @@ if loja:
             while reais < venda:
                 print(f"Dinheiro Insuficiente! Tentando Comprar {vermelho}{qtd} Poções{branco}, mas Você só tem {amarelo}{reais} Reais!{branco}")
                 print()
-                qtd = int(input(f"{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja? "))
+                qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
+>> '''))
                 venda = qtd * pocao
                 print("-"*140)
 
                 if reais >= venda:
                     reais -= venda
                     print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
-                    print(f"{amarelo}Comerciante:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
+                    print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
                     print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
                     print("-"*140)
             
         elif reais >= venda:
             reais -= venda
             print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
-            print(f"{amarelo}Comerciante:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
+            print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
             print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
             print("-"*140)
 
@@ -156,6 +165,7 @@ elif classe == "mago":
 elif classe == "arqueiro":
     print("Arco de Madeira")
     print("Flechas Comuns")
+    enter = input("\nAperte ENTER Para Continuar: ")
 print("-"*140)
 
 # Treinamento de 3 Anos
@@ -166,6 +176,7 @@ print()
 if nível == 100:
     print("Porém, Você já é um Aventureiro Lendário, Não Precisa Treinar!")
     print("Seus Atributos estão:")
+    enter = input("Aperte ENTER Para Continuar: ")
     print("-"*140)
 
 elif nível >= 85:
@@ -178,6 +189,8 @@ elif nível >= 85:
         if train <= 0:
             print()
             print("Você Virou um Aventureiro Lendário, Agora você é Nível 100 (MÁX)!")
+            print("Esses são seus novos atributos! ")
+            enter = input("Aperte ENTER Para Continuar: ")
             print("-"*140)
 
 else:
@@ -191,7 +204,8 @@ else:
             nível += 15
             print("Durante seu Treinamento, Você Subiu de Nível, Parabéns!!!")
             print(f"{azul}Novo Nível: {nível}{branco}")
-            print("Esses são seus novos atributos!: ")
+            print("Esses são seus novos atributos! ")
+            enter = input("Aperte ENTER Para Continuar: ")
             print("-"*140)
 
             hp = nível * 50
@@ -211,6 +225,7 @@ def ataque_monstro(bosshp ,hp, nível):
         if cnt >= 9:
             print()
             print(f"o {roxo}Dragão{branco} tentou Contra-Atacar mas Você Desviou!")
+            enter = input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
 
@@ -220,6 +235,7 @@ def ataque_monstro(bosshp ,hp, nível):
             hp = hp - dn
             print(f"o {roxo}Dragão{branco} Contra-Atacou e pegou de Raspão!")
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
+            enter = input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
 
@@ -229,6 +245,7 @@ def ataque_monstro(bosshp ,hp, nível):
             dn = nível * 15
             hp = hp - dn
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
+            enter = input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
 
@@ -238,6 +255,7 @@ def ataque_monstro(bosshp ,hp, nível):
             dn = nível * 25
             hp = hp - dn
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
+            enter = input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
     return hp
@@ -254,16 +272,21 @@ while bosshp > 0 and hp > 0:
 
 # Opções de Luta
 
-    luta = input("Oque Você Fará? 1-Atacar / 2-Fugir / 3-Magia / 4-Bomba / 5-Poção: ")
+    luta = input('''Oque Você Fará? 1-Atacar / 2-Fugir / 3-Magia / 4-Bomba / 5-Poção
+>> ''')
     print()
     print("Validando Ação, Aguarde...")
     time.sleep(1)
     print("-"*140)
+        
 
 # Luta = Atacar
 
     if luta == "1" and classe in ["guerreiro", "executor"]:
         sorte = random.randint(1, 100)
+
+        print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
             
         if sorte <= 20:
             print()
@@ -275,6 +298,7 @@ while bosshp > 0 and hp > 0:
                 
         elif sorte >=21:
             atk = random.randint(1, 100)
+
 
             if atk >= 90:
                 dano = 10000
@@ -327,6 +351,9 @@ while bosshp > 0 and hp > 0:
     elif luta == "1" and classe == "arqueiro":
         sorte = random.randint(1, 100)
             
+        print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
+
         if sorte <= 20:
             print()
             print("Você errou o Tiro!!!")
@@ -386,9 +413,13 @@ while bosshp > 0 and hp > 0:
     elif luta == "3" and classe == "mago":
         sorte = random.randint(1, 100)
 
+        print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
+
         print()
         print("Qual Magia Você Quer Usar?")
-        magia = input("1-Bola de Fogo / 2-Telecinese / 3-Congelamento: ")
+        magia = input('''1-Bola de Fogo / 2-Telecinese / 3-Congelamento
+>> ''')
         print()
         print("Validando Magia, Aguarde...")
         time.sleep(1)
@@ -490,6 +521,9 @@ while bosshp > 0 and hp > 0:
 
     elif luta == "2":
         sorte = random.randint(1, 100)
+
+        print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
             
         if sorte <= 60:
             print()
@@ -512,6 +546,9 @@ while bosshp > 0 and hp > 0:
 
     elif luta == "4":
         sorte = random.randint(1, 100)
+
+        print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
             
         if sorte <= 30:
             import time
@@ -622,7 +659,8 @@ elif bosshp <= 0:
     print()
     print(f"O {roxo}Dragão {branco}está Morto, Você salvou o Vilarejo!!!")
     print()
-    povo = input(f"{verde}Povo do Vilarejo:{branco} MUITO OBRIGADO {nome.upper()} VOCÊ NOS SALVOU, PEGUE ISSO COMO RECOMPENSA: ")
+    print(f"{verde}Povo do Vilarejo:{branco} MUITO OBRIGADO {nome.upper()} VOCÊ NOS SALVOU, PEGUE ISSO COMO RECOMPENSA")
+    enter = input("Aperte ENTER Para Continuar: ")
         
     win = 10000
     reais += win
