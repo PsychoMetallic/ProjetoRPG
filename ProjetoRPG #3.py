@@ -61,21 +61,10 @@ print()
 print("Olá", nome.capitalize(), "ficamos felizes por ter Entrado em Nossa Guilda!")
 print("-"*140)
 
-nível = int(input('''Qual é o seu Nível?
->> '''))
-
-if nível >= 1 and nível <=100:
-    print()
-    print("Bem Vindo a Guilda dos Aventureiros, seu Nível é:", nível)
-    
-elif nível <= 0:
-    nível=1
-    print("você não é tão fraco assim, seu nível agora é:", nível)
-
-else:
-    print()
-    nível = 1
-    print("O Nível Máximo é 100! sua Punição por ter Mentido é, seu Nível será:", nível)
+nível = random.randint(1, 100)
+print(f"Seu nível foi Sorteado automaticamente!")
+print()
+print("Bem Vindo a Guilda dos Aventureiros, seu Nível é:", nível)
 
 print()
 print("Esses são seus atributos!")
@@ -133,17 +122,28 @@ if loja:
                     reais -= venda
                     print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
                     print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
-                    print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
-                    print("-"*140)
+
+                    if reais > 0:
+                        print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
+                        print("-"*140)
+
+                    else:
+                        print(f"{amarelo}Comerciante:{branco} Você Torrou seu Dinheiro, Não tem Troco!")
+                        print("-"*140)
             
         elif reais >= venda:
             reais -= venda
             print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
             print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
-            print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
-            print("-"*140)
 
-            
+            if reais > 0:
+                print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
+                print("-"*140)
+
+            else:
+                print(f"{amarelo}Comerciante:{branco} Você Torrou seu Dinheiro, Não tem Troco!")
+                print("-"*140)
+
         else:
             print("Resposta Inválida!")
             print("-"*140)   
