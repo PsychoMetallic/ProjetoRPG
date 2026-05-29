@@ -1,12 +1,13 @@
 import random
 import time
+import threading
 
 def input(*args, **kwargs):
     texto = " ".join(map(str, args))
 
     for letra in texto:
         __builtins__.print(letra, end="", flush=True)
-        time.sleep(0.05)
+        time.sleep(0.03)
     
     return __builtins__.input()
 
@@ -26,6 +27,91 @@ def print(*args, **kwargs):
 
     __builtins__.print(end=end)
     
+def loja_inv(amarelo, branco, vermelho, pocao, reais, qtd):
+
+    print(f"{amarelo}Comerciante:{branco} Bem vindo a Loja da Guilda, temos essa {vermelho}Poção{branco} que custa R${pocao}!")
+    loja = input('''Você quer Comprar? Y/N:
+    >> ''').strip().lower() in ["sim", "s", "y"]
+    print("-"*140)
+
+    if loja:
+        if reais < pocao:
+            print(f"{amarelo}Comerciante:{branco} Você não tem {amarelo}Dinheiro{branco} Suficiente!")
+            print("-"*140)
+            
+        
+        else:
+            qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
+>> '''))
+            venda = qtd * pocao
+            
+            print("-"*140)
+            
+            if qtd <=0:
+                print(f"{amarelo}Comerciante:{branco} Muito Engraçado... Saia da Minha Loja!!!")
+                qtd = 0
+                print("-"*140)
+            
+            elif reais < venda:
+                while reais < venda:
+                    print(f"Dinheiro Insuficiente! Tentando Comprar {vermelho}{qtd} Poções{branco}, mas Você só tem {amarelo}{reais} Reais!{branco}")
+                    print()
+                    qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
+>> '''))
+                    venda = qtd * pocao
+                    print("-"*140)
+
+                    if reais >= venda:
+                        reais -= venda
+                        print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
+                        print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
+
+                        if reais > 0:
+                            print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
+                            print("-"*140)
+
+                        else:
+                            print(f"{amarelo}Comerciante:{branco} Você Torrou seu Dinheiro, Não tem Troco!")
+                            print("-"*140)
+                
+            elif reais >= venda:
+                reais -= venda
+                print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
+                print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
+
+                if reais > 0:
+                    print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
+                    print("-"*140)
+
+                else:
+                    print(f"{amarelo}Comerciante:{branco} Você Torrou seu Dinheiro, Não tem Troco!")
+                    print("-"*140)
+
+            else:
+                print("Resposta Inválida!")
+                print("-"*140)   
+                
+    else:
+        print(f"{amarelo}Comerciante:{branco} Volte Sempre!")
+        print("-"*140)
+
+
+    print("este é Seu Inventário no momento:")
+    print(f"{vermelho}Poção: {qtd}{branco}") 
+    if classe == "guerreiro":
+        print("Espada de Ferro")
+    elif classe == "executor":
+        print("Machado de Batalha")
+    elif classe == "mago":
+        print("Cajado de Madeira")
+    elif classe == "arqueiro":
+        print("Arco de Madeira")
+        print("Flechas Comuns")
+        input("\nAperte ENTER Para Continuar: ")
+    print("-"*140)
+qtd = 0
+pocao = 50
+
 # Cores do Terminal
 
 azul = "\033[34m"
@@ -61,14 +147,12 @@ print()
 print("Olá", nome.capitalize(), "ficamos felizes por ter Entrado em Nossa Guilda!")
 print("-"*140)
 
-nível = random.randint(1, 100)
-print(f"Seu nível foi Sorteado automaticamente!")
-print()
-print("Bem Vindo a Guilda dos Aventureiros, seu Nível é:", nível)
+nível = 1
+print("Bem Vindo a Guilda dos Aventureiros, Você é um Novato de nível:", nível)
 
 print()
 print("Esses são seus atributos!")
-enter = input("Aperte ENTER Para Continuar: ")
+input("Aperte ENTER Para Continuar: ")
 print("-"*140)
 
 hp = nível * 50
@@ -80,142 +164,52 @@ print(f"{verde1}Mana: {mana}")
 print(f"{amarelo}Dinheiro: {reais}{branco}")
 print("-"*140)
 
-# Loja da Guilda
-
-pocao = 50
-
-print(f"{amarelo}Comerciante:{branco} Bem vindo a Loja da Guilda, temos essa {vermelho}Poção{branco} que custa R${pocao}!")
-loja = input('''Você quer Comprar? Y/N:
->> ''').strip().lower() in ["sim", "s", "y"]
-print("-"*140)
-
-qtd = 0
-
-if loja:
-    if reais < pocao:
-        print(f"{amarelo}Comerciante:{branco} Você não tem {amarelo}Dinheiro{branco} Suficiente!")
-        print("-"*140)
-          
-    
-    else:
-        qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
->> '''))
-        venda = qtd * pocao
-        
-        print("-"*140)
-        
-        if qtd <=0:
-            print(f"{amarelo}Comerciante:{branco} Muito Engraçado... Saia da Minha Loja!!!")
-            qtd = 0
-            print("-"*140)
-        
-        elif reais < venda:
-            while reais < venda:
-                print(f"Dinheiro Insuficiente! Tentando Comprar {vermelho}{qtd} Poções{branco}, mas Você só tem {amarelo}{reais} Reais!{branco}")
-                print()
-                qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
->> '''))
-                venda = qtd * pocao
-                print("-"*140)
-
-                if reais >= venda:
-                    reais -= venda
-                    print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
-                    print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
-
-                    if reais > 0:
-                        print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
-                        print("-"*140)
-
-                    else:
-                        print(f"{amarelo}Comerciante:{branco} Você Torrou seu Dinheiro, Não tem Troco!")
-                        print("-"*140)
-            
-        elif reais >= venda:
-            reais -= venda
-            print(f"{amarelo}Comerciante:{branco} São Todas Suas Campeão!")
-            print(f"{cinza}Sistema:{branco}{vermelho} {qtd} Poções{branco} Adicionadas Ao Inventário")
-
-            if reais > 0:
-                print(f"{amarelo}Comerciante:{branco} Aqui está seu troco:",round(reais, 2))
-                print("-"*140)
-
-            else:
-                print(f"{amarelo}Comerciante:{branco} Você Torrou seu Dinheiro, Não tem Troco!")
-                print("-"*140)
-
-        else:
-            print("Resposta Inválida!")
-            print("-"*140)   
-            
-else:
-    print(f"{amarelo}Comerciante:{branco} Volte Sempre!")
-    print("-"*140)
-
-# Inventário do Jogador
-
-print("Inventário:")
-print(f"{vermelho}Poção: {qtd}{branco}") 
-if classe == "guerreiro":
-    print("Espada de Ferro")
-elif classe == "executor":
-    print("Machado de Batalha")
-elif classe == "mago":
-    print("Cajado de Madeira")
-elif classe == "arqueiro":
-    print("Arco de Madeira")
-    print("Flechas Comuns")
-    enter = input("\nAperte ENTER Para Continuar: ")
-print("-"*140)
 
 # Treinamento de 3 Anos
-print()
-print("Você está pensando em Treinar por 3 Anos...")
-print()
+while True:
+    train = int(input('''Como qualquer Iniciante minimamente inteligente, você decide treinar, Mas por quantos anos?
+>> '''))
+    if train >= 2 and train <= 16:
+        for i in range(train):
+            print(f"Treinando... {train} Anos Restantes")
+            aumento = 6
+            nível += aumento
+            train -= 1
+            time.sleep(0.5)
 
-if nível == 100:
-    print("Porém, Você já é um Aventureiro Lendário, Não Precisa Treinar!")
-    print("Seus Atributos estão:")
-    enter = input("Aperte ENTER Para Continuar: ")
-    print("-"*140)
+        print("\nDurante seu Treinamento, Você Subiu de Nível, Parabéns!!!")
+        print(f"{azul}Novo Nível: {nível}{branco}")
+        print("Esses são seus novos atributos! ")
+        input("Aperte ENTER Para Continuar: ")
+        print("-"*140)
 
-elif nível >= 85:
-    import time
-    train = 3
-    for i in range(3):
-        print(f"Treinando... {train} Anos Restantes")
-        train -= 1
-        time.sleep(1.5)
-        if train <= 0:
-            print()
-            print("Você Virou um Aventureiro Lendário, Agora você é Nível 100 (MÁX)!")
-            print("Esses são seus novos atributos! ")
-            enter = input("Aperte ENTER Para Continuar: ")
-            print("-"*140)
+        hp = nível * 50
+        mana = nível * 75
+        reais = nível * 100
 
-else:
-    import time
-    train = 3
-    for i in range(3):
-        print(f"Treinando... {train} Anos Restantes")
-        train -= 1
-        time.sleep(1.5)
-        if train <= 0:
-            nível += 15
-            print("Durante seu Treinamento, Você Subiu de Nível, Parabéns!!!")
-            print(f"{azul}Novo Nível: {nível}{branco}")
-            print("Esses são seus novos atributos! ")
-            enter = input("Aperte ENTER Para Continuar: ")
-            print("-"*140)
+        print(f"{azul}Hp: {hp}")
+        print(f"{verde1}Mana: {mana}")
+        print(f"{amarelo}Dinheiro: {reais}{branco}")
+        print("-"*140)
+        time.sleep(2)
+        break
 
-            hp = nível * 50
-            mana = nível * 75
+    elif train <= 1:
+        print("\nVocê precisa treinar por NO MÍNIMO, 2 Anos!")
+        print()
+        continue
 
-print(f"{azul}Hp: {hp}")
-print(f"{verde1}Mana: {mana}")
-print(f"{amarelo}Dinheiro: {reais}{branco}")
-print("-"*140)
-time.sleep(2)
+    else:
+        nível = 100
+        for i in range(train):
+            print(f"Treinando... {train} Anos Restantes")
+            train -= 1
+            time.sleep(0.1)
+        print("\nVocê treinou tanto, Que Alcançou o Nível 100(Máx)")
+        print("Meus Parabéns!!!")
+        break
+    
+pocao, qtd = loja_inv(amarelo, branco, vermelho, pocao, reais, qtd)
 
 def ataque_monstro(bosshp ,hp, nível):
     cnt = random.randint(1, 10)
@@ -225,7 +219,7 @@ def ataque_monstro(bosshp ,hp, nível):
         if cnt >= 9:
             print()
             print(f"o {roxo}Dragão{branco} tentou Contra-Atacar mas Você Desviou!")
-            enter = input("Aperte ENTER Para Continuar: ")
+            input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
 
@@ -235,7 +229,7 @@ def ataque_monstro(bosshp ,hp, nível):
             hp = hp - dn
             print(f"o {roxo}Dragão{branco} Contra-Atacou e pegou de Raspão!")
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
-            enter = input("Aperte ENTER Para Continuar: ")
+            input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
 
@@ -245,7 +239,7 @@ def ataque_monstro(bosshp ,hp, nível):
             dn = nível * 15
             hp = hp - dn
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
-            enter = input("Aperte ENTER Para Continuar: ")
+            input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
 
@@ -255,7 +249,7 @@ def ataque_monstro(bosshp ,hp, nível):
             dn = nível * 25
             hp = hp - dn
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
-            enter = input("Aperte ENTER Para Continuar: ")
+            input("Aperte ENTER Para Continuar: ")
             print()
             print("-"*140)
     return hp
@@ -272,9 +266,20 @@ while bosshp > 0 and hp > 0:
 
 # Opções de Luta
 
-    luta = input('''Oque Você Fará? 1-Atacar / 2-Fugir / 3-Magia / 4-Bomba / 5-Poção
+    luta = None
+    
+    def ler_input():
+        global luta
+        luta = input('''Oque Você Fará? 1-Atacar / 2-Fugir / 3-Magia / 4-Bomba / 5-Poção
 >> ''')
+        
+    thread = threading.Thread(target=ler_input)
+    thread.daemon = True
+    thread.start()
+    thread.join(timeout=10)
     print()
+
+
     print("Validando Ação, Aguarde...")
     time.sleep(1)
     print("-"*140)
@@ -635,6 +640,13 @@ o Número rolado Foi: {sorte}''')
             print()
             print("-"*140)
 
+    elif luta == None:
+        print("\nVocê demorou muito tempo para Responder!")
+        print("Você foi Penalizado!")
+        pena = hp * 0.10
+        hp -= pena
+        print(hp)
+
 # Ação Inválida
 
     else:
@@ -645,7 +657,6 @@ o Número rolado Foi: {sorte}''')
 
         hp = ataque_monstro(bosshp, hp, nível)
         
-
 # Vitória
 
 if bosshp <= 0 and hp <= 0:
@@ -660,7 +671,7 @@ elif bosshp <= 0:
     print(f"O {roxo}Dragão {branco}está Morto, Você salvou o Vilarejo!!!")
     print()
     print(f"{verde}Povo do Vilarejo:{branco} MUITO OBRIGADO {nome.upper()} VOCÊ NOS SALVOU, PEGUE ISSO COMO RECOMPENSA")
-    enter = input("Aperte ENTER Para Continuar: ")
+    input("Aperte ENTER Para Continuar: ")
         
     win = 10000
     reais += win
