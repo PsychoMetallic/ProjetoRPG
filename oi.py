@@ -76,7 +76,7 @@ while bosshp > 0:
             print("-"*150)
                 
         elif sorte >=21:
-            atk = random.randint(1, 100)
+            d20 = random.randint(1, 100)
 
             if atk >= 90:
                 dano = 10000

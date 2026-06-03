@@ -195,7 +195,7 @@ while True:
             __builtins__.print(f"\rTreinando... [{barra:<{anos}}] {i+1}/{anos}",end="",flush=True)
             aumento = 6
             nível += aumento
-            time.sleep(0.5)
+            time.sleep(0.3)
 
         print("\nDurante seu Treinamento, Você Subiu de Nível, Parabéns!!!")
         print(f"{azul}Novo Nível: {nível}{branco}")
@@ -232,7 +232,7 @@ while True:
         for i in range(anos):
             barra = "■" * (i + 1)
             __builtins__.print(f"\rTreinando... [{barra:<{anos}}] {i+1}/{anos}",end="",flush=True)
-            time.sleep(0.1)
+            time.sleep(0.3)
         print("\nVocê treinou tanto, Que Alcançou o Nível 100(Máx)")
         print("Meus Parabéns!!!")
         print("Esses são seus novos atributos! ")
@@ -254,8 +254,12 @@ while True:
     
 qtd, reais = loja_inv(amarelo, branco, vermelho, pocao, reais, qtd)
 
+# Definições da Batalha
+
 def ataque_monstro(bosshp ,hp, nível):
     cnt = random.randint(1, 10)
+
+    global azul, branco, vermelho, verde1, verde, cl, amarelo, roxo, cinza
 
     time.sleep(1.5)
     if bosshp > 0:
@@ -297,6 +301,393 @@ def ataque_monstro(bosshp ,hp, nível):
             print(cl)
     return hp
 
+def ataque_corpo(bosshp, hp, nível, ataque_monstro):
+
+    global azul, branco, vermelho, verde1, verde, cl, amarelo, roxo, cinza
+
+    sorte = random.randint(1, 100)
+
+    print("Validando Ação, Aguarde...")
+    time.sleep(1)
+    print(cl)
+
+    print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
+            
+    if sorte <= 20:
+        print()
+        print("Você errou o Ataque!!!")
+        print()
+        print(cl)
+
+        hp = ataque_monstro(bosshp, hp, nível)
+            
+    elif sorte >=21:
+        d20 = random.randint(1, 20)
+
+        print(f'''Você jogou um D20 para Atacar!
+O Número rolado foi: {d20}''')
+
+        if d20 >= 14:
+            dano = 10000
+            bosshp = bosshp - dano
+            print()
+            print(f"Você deu Um SuperPulo e Cortou a Cabeça do {roxo}Dragão{branco}")
+            print("Matando ele na Hora!!!")
+            print()
+            print(cl)
+
+        elif d20 >= 10:
+            dano = nível * 35
+            bosshp = bosshp - dano
+            print()
+            print("Você Cortou a Barriga dele! o Corte foi Profundo!!!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+                
+        elif d20 >= 5:
+            dano = nível * 25
+            bosshp = bosshp - dano
+            print()
+            print("Você deu um Superpulo e Desferiu Vários Cortes em sequência no Rosto dele!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+                    
+        elif d20 = 1:
+            dano = nível * 10
+            bosshp = bosshp - dano
+            print()
+            print("Você Desferiu um corte na Perna dele!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+
+    return bosshp, hp
+
+def ataque_tiro(bosshp, hp, nível, ataque_monstro):
+    sorte = random.randint(1, 100)
+
+    global azul, branco, vermelho, verde1, verde, cl, amarelo, roxo, cinza
+
+    print("Validando Ação, Aguarde...")
+    time.sleep(1)
+    print(cl)
+        
+    print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
+
+    if sorte <= 20:
+        print()
+        print("Você errou o Tiro!!!")
+        print()
+        print(cl)
+
+        hp = ataque_monstro(bosshp, hp, nível)
+            
+    elif sorte >=21:
+        d20 = random.randint(1, 20)
+
+        print(f'''Você jogou um D20 para Atacar!
+O Número rolado foi: {d20}''')
+
+        if d20 >= 14:
+            dano = 10000
+            bosshp = bosshp - dano
+            print()
+            print(f"Você atirou uma Flecha que perfurou o Coração do {roxo}Dragão{branco}")
+            print("Matando ele na Hora!!!")
+            print()
+            print(cl)
+
+        elif d20 >= 10:
+            dano = nível * 35
+            bosshp = bosshp - dano
+            print()
+            print("Você atirou uma Flecha na Barriga dele! e ela entrou muito fundo!!!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+                
+        elif d20 >= 5:
+            dano = nível * 25
+            bosshp = bosshp - dano
+            print()
+            print("Você deu um tiro na cabeça dele, mas ele conseguiu desviar, o Tiro Acertou o rosto dele!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+                    
+        elif d20 = 1:
+            dano = nível * 10
+            bosshp = bosshp - dano
+            print()
+            print("Você atirou uma Flecha na Perna dele!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+
+    return bosshp, hp
+
+def ataque_mago(bosshp, hp, nível, mana, ataque_monstro):
+    sorte = random.randint(1, 100)
+
+    global azul, branco, vermelho, verde1, verde, cl, amarelo, roxo, cinza
+
+    print("Validando Ação, Aguarde...")
+    time.sleep(1)
+    print(cl)
+
+    print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
+
+    print()
+    print("Qual Magia Você Quer Usar?")
+    magia = input('''1-Bola de Fogo / 2-Telecinese / 3-Congelamento
+>> ''')
+    print()
+    print("Validando Magia, Aguarde...")
+    time.sleep(1)
+    print(cl)
+        
+    if sorte <= 10:
+        print()
+        print("Você Errou!!!")
+        print()
+        print(cl)
+
+        hp = ataque_monstro(bosshp, hp, nível)
+            
+    elif sorte >=11:
+        d20 = random.randint(1, 20)
+
+        print(f'''Você jogou um D20 para Atacar!
+O Número rolado foi: {d20}''')
+
+        if d20 >= 14 and mana >= 1000 and magia == "2":
+
+            print()
+            dano = 10000
+            bosshp -= dano
+            gasto = nível * 10
+            mana -= gasto
+            print("Você Esmagou o Crânio Dele!")
+            print(f"Matando ele na hora e Gastando {verde1}{gasto} de Mana!{branco}")
+            print()
+            print(f"{verde1}Mana Restante: {mana}{branco}")
+            print()
+            print(cl)
+
+        elif d20 >= 10 and mana >= 700 and magia == "2":
+            dano = nível * 35
+            bosshp -= dano
+            gasto = nível * 7
+            mana -= gasto
+            print()
+            print("Você Prensou ele com Duas Pedras!")
+            print(f"Causando {roxo}{dano} de Dano!{branco} e Gastando {verde1}{gasto} de Mana!{branco}")
+            print()
+            print(f"{verde1}Mana Restante: {mana}{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+
+        elif d20 >= 5 and mana >= 550 and magia == "1":
+            dano = nível * 25
+            bosshp -= dano
+            gasto = nível * 5.5
+            mana -= gasto
+            print()
+            print("Você Lançou uma Bola de Fogo nele!")
+            print(f"Causando {roxo}{dano} de Dano!{branco} e Gastando {verde1}{gasto} de Mana!{branco}")
+            print()
+            print(f"{verde1}Mana Restante: {mana}{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+
+        elif d20 == 1 and mana >= 400 and magia == "3":
+            dano = nível * 10
+            bosshp -= dano
+            gasto = nível * 4
+            mana -= gasto
+            print()
+            print(f"Você Congelou ele, mas não foi tão Eficaz, Afinal, Ele é um {roxo}Dragão{branco} de Fogo!!!")
+            print(f"Mas Causou {roxo}{dano} de Dano!{branco} e Gastou {verde1}{gasto} de Mana!{branco}")
+            print()
+            print(f"{verde1}Mana Restante: {mana}{branco}")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+
+        elif d20 > 0 and mana <= 199:
+            print()
+            print(f"{verde1}Mana{branco} Insuficiente!")
+            print()
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+
+    elif sorte >= 11 and mana <= 199:
+        print()
+        print(f"{verde1}Mana{branco} Insuficiente!")
+        print()
+        print(cl)
+
+        hp = ataque_monstro(bosshp, hp, nível)
+
+    return bosshp, hp, mana
+
+def fuga_all(hp):
+    sorte = random.randint(1, 100)
+
+    global azul, branco, vermelho, verde1, verde, cl, amarelo, roxo, cinza
+
+    print("Validando Ação, Aguarde...")
+    time.sleep(1)
+    print(cl)
+
+    print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
+        
+    if sorte <= 60:
+        dano = 10000
+        hp -= dano
+        print()
+        print(f"sua Tentativa de Fuga Falhou, o {roxo}Dragão{branco}te Matou!!!")
+        print()
+        
+            
+    elif sorte >=61:
+        print()
+        print(f"Você Fugiu do {roxo}Dragão {branco}com Sucesso!")
+        print("Porém, O Vilarejo foi Destruído...")
+        print(f"{vermelho}GAME OVER!{branco}")
+        print()
+        print(cl)
+
+def ataque_bomba(bosshp, hp, nível, ataque_monstro):
+    sorte = random.randint(1, 100)
+    import time
+
+    global azul, branco, vermelho, verde1, verde, cl, amarelo, roxo, cinza
+
+    print("Validando Ação, Aguarde...")
+    time.sleep(1)
+    print(cl)
+
+    print(f'''você Rolou um D100!
+o Número rolado Foi: {sorte}''')
+        
+    if sorte <= 30:
+
+        bomba = 5
+        while bomba > 0:
+            print(bomba)
+            bomba -= 1
+            time.sleep(0.3)
+        print("BOOM!!!")
+        print("Você Errou a Bomba!")
+        print(cl)
+
+        hp = ataque_monstro(bosshp, hp, nível)
+
+    elif sorte >=31:
+        d20 = random.randint(1, 20)
+
+        print(f'''Você jogou um D20 para Atacar!
+O Número rolado foi: {d20}''')
+
+        if d20 <= 10:
+
+            bomba = 5
+            while bomba > 0:
+                print(bomba)
+                bomba -= 1
+                time.sleep(0.3)
+            dano = nível * 50
+            bosshp = bosshp - dano
+            print("BOOM!!!")
+            print(f"Na hora que o {roxo}Dragão {branco}Abriu a Boca, Você lançou a Bomba na Garganta Dele!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+                
+        elif d20 >= 11:
+
+            bomba = 5
+            while bomba > 0:
+                print(bomba)
+                bomba -= 1
+                time.sleep(0.3)
+            dano = nível * 30
+            bosshp = bosshp - dano
+            print("BOOM!!!")
+            print(f"Você lançou a Bomba no {roxo}Dragão{branco}, Machucou Muito!")
+            print(f"Causando {roxo}{dano} de Dano!{branco}")
+            print(cl)
+
+            hp = ataque_monstro(bosshp, hp, nível)
+
+    return bosshp, hp
+
+def usar_pocao(bosshp, hp, nível, qtd, ataque_monstro):
+    hp_max = nível * 50
+
+    global azul, branco, vermelho, verde1, verde, cl, amarelo, roxo, cinza
+
+    print("Validando Ação, Aguarde...")
+    time.sleep(1)
+    print(cl)
+
+    if qtd <= 0:
+        print()
+        print("Você Não tem Poções no Inventário!")
+        print()
+        print(cl)
+
+        hp = ataque_monstro(bosshp, hp, nível)
+
+    elif hp >= hp_max:
+        print()
+        print("Sua vida já está cheia! Não precisa usar Poção.")
+        print()
+        print(cl)
+
+    else:
+        cura = 200
+        hp += cura
+
+        if hp > hp_max:
+            hp = hp_max
+
+        qtd -= 1
+        print()
+        print(f"Você Bebeu uma {vermelho}Poção {branco}e Recuperou {int(cura)} de Vida!")
+        print(f"{azul}Vida Atual: {int(hp)}{branco}")
+        print(f"{vermelho}Poções Restantes: {qtd}{branco}")
+        print()
+        print(cl)
+
+    return qtd, hp
+
 # Batalha contra o Dragão
 
 bosshp = nível * 100
@@ -325,239 +716,34 @@ while bosshp > 0 and hp > 0:
 # Luta = Atacar
 
     if luta == "1" and classe in ["guerreiro", "executor"]:
-        sorte = random.randint(1, 100)
 
+        bosshp, hp = ataque_corpo(bosshp, hp, nível, ataque_monstro)
+
+    elif luta == "1" and classe == "mago":
         print("Validando Ação, Aguarde...")
         time.sleep(1)
         print(cl)
 
-        print(f'''você Rolou um D100!
-o Número rolado Foi: {sorte}''')
-            
-        if sorte <= 20:
-            print()
-            print("Você errou o Ataque!!!")
-            print()
-            print(cl)
-
-            hp = ataque_monstro(bosshp, hp, nível)
-                
-        elif sorte >=21:
-            atk = random.randint(1, 100)
-
-
-            if atk >= 90:
-                dano = 10000
-                bosshp = bosshp - dano
-                print()
-                print(f"Você deu Um SuperPulo e Cortou a Cabeça do {roxo}Dragão{branco}")
-                print("Matando ele na Hora!!!")
-                print()
-                print(cl)
-
-            elif atk >= 60:
-                dano = nível * 35
-                bosshp = bosshp - dano
-                print()
-                print("Você Cortou a Barriga dele! o Corte foi Profundo!!!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-                    
-            elif atk >= 30:
-                dano = nível * 25
-                bosshp = bosshp - dano
-                print()
-                print("Você deu um Superpulo e Desferiu Vários Cortes em sequência no Rosto dele!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-                        
-            elif atk >= 1:
-                dano = nível * 10
-                bosshp = bosshp - dano
-                print()
-                print("Você Desferiu um corte na Perna dele!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-
-    elif luta == "1" and classe == "mago":
         print()
         print("Um Mago não é tão bom em Combate Corpo a Corpo, Tente Usar Magias!!!")
         print()
         print(cl)
 
     elif luta == "1" and classe == "arqueiro":
-        sorte = random.randint(1, 100)
-            
-        print(f'''você Rolou um D100!
-o Número rolado Foi: {sorte}''')
-
-        if sorte <= 20:
-            print()
-            print("Você errou o Tiro!!!")
-            print()
-            print(cl)
-
-            hp = ataque_monstro(bosshp, hp, nível)
-                
-        elif sorte >=21:
-            atk = random.randint(1, 100)
-
-            if atk >= 90:
-                dano = 10000
-                bosshp = bosshp - dano
-                print()
-                print(f"Você atirou uma Flecha que perfurou o Coração do {roxo}Dragão{branco}")
-                print("Matando ele na Hora!!!")
-                print()
-                print(cl)
-
-            elif atk >= 60:
-                dano = nível * 35
-                bosshp = bosshp - dano
-                print()
-                print("Você atirou uma Flecha na Barriga dele! e ela entrou muito fundo!!!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-                    
-            elif atk >= 30:
-                dano = nível * 25
-                bosshp = bosshp - dano
-                print()
-                print("Você deu um tiro na cabeça dele, mas ele conseguiu desviar, o Tiro Acertou o rosto dele!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-                        
-            elif atk >= 1:
-                dano = nível * 10
-                bosshp = bosshp - dano
-                print()
-                print("Você atirou uma Flecha na Perna dele!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-
+        
+        bosshp, hp = ataque_tiro(bosshp, hp, nível, ataque_monstro)
 
 # Luta = Magia
 
     elif luta == "3" and classe == "mago":
-        sorte = random.randint(1, 100)
-
-        print(f'''você Rolou um D100!
-o Número rolado Foi: {sorte}''')
-
-        print()
-        print("Qual Magia Você Quer Usar?")
-        magia = input('''1-Bola de Fogo / 2-Telecinese / 3-Congelamento
->> ''')
-        print()
-        print("Validando Magia, Aguarde...")
-        time.sleep(1)
-        print(cl)
-            
-        if sorte <= 10:
-            print()
-            print("Você Errou!!!")
-            print()
-            print(cl)
-
-            hp = ataque_monstro(bosshp, hp, nível)
-                
-        elif sorte >=11:
-            mg = random.randint(1, 100)
-
-            if mg >= 90 and mana >= 1000 and magia == "2":
-
-                print()
-                dano = 10000
-                bosshp -= dano
-                gasto = nível * 10
-                mana -= gasto
-                print("Você Esmagou o Crânio Dele!")
-                print(f"Matando ele na hora e Gastando {verde1}{gasto} de Mana!{branco}")
-                print()
-                print(f"{verde1}Mana Restante: {mana}{branco}")
-                print()
-                print(cl)
-
-            elif mg >= 60 and mana >= 700 and magia == "2":
-                dano = nível * 35
-                bosshp -= dano
-                gasto = nível * 7
-                mana -= gasto
-                print()
-                print("Você Prensou ele com Duas Pedras!")
-                print(f"Causando {roxo}{dano} de Dano!{branco} e Gastando {verde1}{gasto} de Mana!{branco}")
-                print()
-                print(f"{verde1}Mana Restante: {mana}{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-
-            elif mg >= 30 and mana >= 550 and magia == "1":
-                dano = nível * 25
-                bosshp -= dano
-                gasto = nível * 5.5
-                mana -= gasto
-                print()
-                print("Você Lançou uma Bola de Fogo nele!")
-                print(f"Causando {roxo}{dano} de Dano!{branco} e Gastando {verde1}{gasto} de Mana!{branco}")
-                print()
-                print(f"{verde1}Mana Restante: {mana}{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-
-            elif mg >= 1 and mana >= 400 and magia == "3":
-                dano = nível * 10
-                bosshp -= dano
-                gasto = nível * 4
-                mana -= gasto
-                print()
-                print(f"Você Congelou ele, mas não foi tão Eficaz, Afinal, Ele é um {roxo}Dragão{branco} de Fogo!!!")
-                print(f"Mas Causou {roxo}{dano} de Dano!{branco} e Gastou {verde1}{gasto} de Mana!{branco}")
-                print()
-                print(f"{verde1}Mana Restante: {mana}{branco}")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-
-            elif mg >= 1 and mana <= 199:
-                print()
-                print(f"{verde1}Mana{branco} Insuficiente!")
-                print()
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-
-        elif sorte >=51 and mana <= 199:
-            print()
-            print(f"{verde1}Mana{branco} Insuficiente!")
-            print()
-            print(cl)
-
-            hp = ataque_monstro(bosshp, hp, nível)
+        bosshp, hp, mana = ataque_mago(bosshp, hp, nível, ataque_monstro)
 
     elif luta == "3" and classe != "mago":
+
+        print("Validando Ação, Aguarde...")
+        time.sleep(1)
+        print(cl)
+
         print()
         print("Apenas Magos podem usar Magias!")
         print()
@@ -566,133 +752,35 @@ o Número rolado Foi: {sorte}''')
 # Luta = Fugir
 
     elif luta == "2":
-        sorte = random.randint(1, 100)
-
-        print(f'''você Rolou um D100!
-o Número rolado Foi: {sorte}''')
-            
-        if sorte <= 60:
-            print()
-            print(f"sua Tentativa de Fuga Falhou, o {roxo}Dragão{branco}te Matou!!!")
-            print(f"{vermelho}GAME OVER!{branco}")
-            print()
-            print(cl)
-            break
-                
-        elif sorte >=61:
-            print()
-            print(f"Você Fugiu do {roxo}Dragão {branco}com Sucesso!")
-            print("Porém, O Vilarejo foi Destruído...")
-            print(f"{vermelho}GAME OVER!{branco}")
-            print()
-            print(cl)
-            break
+        hp = fuga_all(hp)
 
 # Luta = Bomba
 
     elif luta == "4":
-        sorte = random.randint(1, 100)
-
-        print(f'''você Rolou um D100!
-o Número rolado Foi: {sorte}''')
-            
-        if sorte <= 30:
-            import time
-
-            bomba = 5
-            while bomba > 0:
-                print(bomba)
-                bomba -= 1
-                time.sleep(0.3)
-            print("BOOM!!!")
-            print("Você Errou a Bomba!")
-            print(cl)
-
-            hp = ataque_monstro(bosshp, hp, nível)
-       
-        elif sorte >=31:
-
-            bomb = random.randint(1, 100)
-
-            if bomb <= 40:
-                import time
-
-                bomba = 5
-                while bomba > 0:
-                    print(bomba)
-                    bomba -= 1
-                    time.sleep(0.3)
-                dano = nível * 50
-                bosshp = bosshp - dano
-                print("BOOM!!!")
-                print(f"Na hora que o {roxo}Dragão {branco}Abriu a Boca, Você lançou a Bomba na Garganta Dele!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
-                    
-            elif bomb >= 41:
-                import time
-
-                bomba = 5
-                while bomba > 0:
-                    print(bomba)
-                    bomba -= 1
-                    time.sleep(0.3)
-                dano = nível * 30
-                bosshp = bosshp - dano
-                print("BOOM!!!")
-                print(f"Você lançou a Bomba no {roxo}Dragão{branco}, Machucou Muito!")
-                print(f"Causando {roxo}{dano} de Dano!{branco}")
-                print(cl)
-
-                hp = ataque_monstro(bosshp, hp, nível)
+        bosshp, hp = ataque_bomba(bosshp, hp, nível, ataque_monstro)
 
 # Luta = Poção
 
     elif luta == "5":
-        hp_max = nível * 50
-
-        if qtd <= 0:
-            print()
-            print("Você Não tem Poções no Inventário!")
-            print()
-            print(cl)
-
-            hp = ataque_monstro(bosshp, hp, nível)
-
-        elif hp >= hp_max:
-            print()
-            print("Sua vida já está cheia! Não precisa usar Poção.")
-            print()
-            print(cl)
-
-        else:
-            cura = 200
-            hp += cura
-
-            if hp > hp_max:
-                hp = hp_max
-
-            qtd -= 1
-            print()
-            print(f"Você Bebeu uma {vermelho}Poção {branco}e Recuperou {int(cura)} de Vida!")
-            print(f"{azul}Vida Atual: {int(hp)}{branco}")
-            print(f"{vermelho}Poções Restantes: {qtd}{branco}")
-            print()
-            print(cl)
+        qtd, hp = usar_pocao(bosshp, hp, nível, qtd, ataque_monstro)
+        
+#Luta = Sem Resposta
 
     elif luta == None:
         print("\nVocê demorou muito tempo para Responder!")
         print("Você foi Penalizado!")
         pena = hp * 0.10
         hp -= pena
-        print(f"Você perdeu {hp} de Vida!")
+        print(f"Você perdeu {pena} de Vida!")
         print()
 
 # Ação Inválida
 
     else:
+        print("Validando Ação, Aguarde...")
+        time.sleep(1)
+        print(cl)
+
         print()
         print(f"Ação Inválida! Tente Novamente!")
         print()
