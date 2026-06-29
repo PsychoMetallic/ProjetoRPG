@@ -359,7 +359,7 @@ O Número rolado foi: {d20}''')
 
             hp = ataque_monstro(bosshp, hp, nível)
                     
-        elif d20 = 1:
+        elif d20 == 1:
             dano = nível * 10
             bosshp = bosshp - dano
             print()
@@ -429,7 +429,7 @@ O Número rolado foi: {d20}''')
 
             hp = ataque_monstro(bosshp, hp, nível)
                     
-        elif d20 = 1:
+        elif d20 == 1:
             dano = nível * 10
             bosshp = bosshp - dano
             print()
@@ -451,105 +451,118 @@ def ataque_mago(bosshp, hp, nível, mana, ataque_monstro):
     time.sleep(1)
     print(cl)
 
-    print(f'''você Rolou um D100!
-o Número rolado Foi: {sorte}''')
+    print(f'''Você rolou um D100!
+Número: {sorte}''')
 
     print()
-    print("Qual Magia Você Quer Usar?")
+    print("Escolha sua magia:")
     magia = input('''1-Bola de Fogo / 2-Telecinese / 3-Congelamento
->> ''')
-    print()
-    print("Validando Magia, Aguarde...")
+>> ''').strip()
+
+    print("\nProcessando magia...")
     time.sleep(1)
     print(cl)
-        
+
+    # ❌ Falha geral do ataque
     if sorte <= 10:
-        print()
-        print("Você Errou!!!")
-        print()
-        print(cl)
+        print("Você errou a magia!")
+        hp = ataque_monstro(bosshp, hp, nível)
+        return bosshp, hp, mana
+
+    # 🎲 ataque normal
+    d20 = random.randint(1, 20)
+    print(f"Você rolou um D20: {d20}")
+
+    # =========================
+    # 🔮 TELECINESE
+    # =========================
+    if magia == "2":
+
+        if mana < 700:
+            print("Mana insuficiente para Telecinese!")
+            hp = ataque_monstro(bosshp, hp, nível)
+            return bosshp, hp, mana
+
+        if d20 >= 14:
+            dano = 10000
+            gasto = nível * 10
+
+            bosshp -= dano
+            mana -= gasto
+
+            print(f"💥 Você esmagou o Dragão com telecinese!")
+            print(f"Dano: {dano} | Mana: -{gasto}")
+
+        elif d20 >= 10:
+            dano = nível * 35
+            gasto = nível * 7
+
+            bosshp -= dano
+            mana -= gasto
+
+            print(f"🪨 Você prensou o Dragão com pedras!")
+            print(f"Dano: {dano} | Mana: -{gasto}")
+
+        else:
+            print("Sua telecinese falhou!")
 
         hp = ataque_monstro(bosshp, hp, nível)
-            
-    elif sorte >=11:
-        d20 = random.randint(1, 20)
 
-        print(f'''Você jogou um D20 para Atacar!
-O Número rolado foi: {d20}''')
+    # =========================
+    # 🔥 BOLA DE FOGO
+    # =========================
+    elif magia == "1":
 
-        if d20 >= 14 and mana >= 1000 and magia == "2":
-
-            print()
-            dano = 10000
-            bosshp -= dano
-            gasto = nível * 10
-            mana -= gasto
-            print("Você Esmagou o Crânio Dele!")
-            print(f"Matando ele na hora e Gastando {verde1}{gasto} de Mana!{branco}")
-            print()
-            print(f"{verde1}Mana Restante: {mana}{branco}")
-            print()
-            print(cl)
-
-        elif d20 >= 10 and mana >= 700 and magia == "2":
-            dano = nível * 35
-            bosshp -= dano
-            gasto = nível * 7
-            mana -= gasto
-            print()
-            print("Você Prensou ele com Duas Pedras!")
-            print(f"Causando {roxo}{dano} de Dano!{branco} e Gastando {verde1}{gasto} de Mana!{branco}")
-            print()
-            print(f"{verde1}Mana Restante: {mana}{branco}")
-            print()
-            print(cl)
-
+        if mana < 550:
+            print("Mana insuficiente para Bola de Fogo!")
             hp = ataque_monstro(bosshp, hp, nível)
+            return bosshp, hp, mana
 
-        elif d20 >= 5 and mana >= 550 and magia == "1":
+        if d20 >= 10:
             dano = nível * 25
+            gasto = int(nível * 5.5)
+
             bosshp -= dano
-            gasto = nível * 5.5
             mana -= gasto
-            print()
-            print("Você Lançou uma Bola de Fogo nele!")
-            print(f"Causando {roxo}{dano} de Dano!{branco} e Gastando {verde1}{gasto} de Mana!{branco}")
-            print()
-            print(f"{verde1}Mana Restante: {mana}{branco}")
-            print()
-            print(cl)
 
+            print(f"🔥 Bola de fogo acertou o Dragão!")
+            print(f"Dano: {dano} | Mana: -{gasto}")
+
+        else:
+            print("Sua bola de fogo falhou!")
+
+        hp = ataque_monstro(bosshp, hp, nível)
+
+    # =========================
+    # ❄ CONGELAMENTO
+    # =========================
+    elif magia == "3":
+
+        if mana < 400:
+            print("Mana insuficiente para Congelamento!")
             hp = ataque_monstro(bosshp, hp, nível)
+            return bosshp, hp, mana
 
-        elif d20 == 1 and mana >= 400 and magia == "3":
+        if d20 == 1:
             dano = nível * 10
-            bosshp -= dano
             gasto = nível * 4
+
+            bosshp -= dano
             mana -= gasto
-            print()
-            print(f"Você Congelou ele, mas não foi tão Eficaz, Afinal, Ele é um {roxo}Dragão{branco} de Fogo!!!")
-            print(f"Mas Causou {roxo}{dano} de Dano!{branco} e Gastou {verde1}{gasto} de Mana!{branco}")
-            print()
-            print(f"{verde1}Mana Restante: {mana}{branco}")
-            print()
-            print(cl)
 
-            hp = ataque_monstro(bosshp, hp, nível)
+            print("❄ Você congelou o Dragão parcialmente!")
+            print(f"Dano: {dano} | Mana: -{gasto}")
 
-        elif d20 > 0 and mana <= 199:
-            print()
-            print(f"{verde1}Mana{branco} Insuficiente!")
-            print()
-            print(cl)
+        else:
+            print("O congelamento não foi eficaz!")
 
-            hp = ataque_monstro(bosshp, hp, nível)
+        hp = ataque_monstro(bosshp, hp, nível)
 
-    elif sorte >= 11 and mana <= 199:
-        print()
-        print(f"{verde1}Mana{branco} Insuficiente!")
-        print()
-        print(cl)
-
+    # =========================
+    # ❌ magia inválida
+    # =========================
+    else:
+        print("Magia inválida!")
         hp = ataque_monstro(bosshp, hp, nível)
 
     return bosshp, hp, mana
@@ -692,6 +705,7 @@ def usar_pocao(bosshp, hp, nível, qtd, ataque_monstro):
 
 bosshp = nível * 100
 print(f"Oh Não, Apareceu um {roxo}Dragão {branco}e Ele está Atacando o Vilarejo!")
+poc_tu = 0
 
 while bosshp > 0 and hp > 0:
     print(f"A Vida dele está em: {roxo}{bosshp}{branco}")
@@ -736,7 +750,7 @@ while bosshp > 0 and hp > 0:
 # Luta = Magia
 
     elif luta == "3" and classe == "mago":
-        bosshp, hp, mana = ataque_mago(bosshp, hp, nível, ataque_monstro)
+        bosshp, hp, mana = ataque_mago(bosshp, hp, nível, mana, ataque_monstro)
 
     elif luta == "3" and classe != "mago":
 
@@ -762,7 +776,15 @@ while bosshp > 0 and hp > 0:
 # Luta = Poção
 
     elif luta == "5":
-        qtd, hp = usar_pocao(bosshp, hp, nível, qtd, ataque_monstro)
+
+        if poc_tu >= 3:
+            print("\nVocê já usou o limite de 3 poções neste turno!")
+            print(cl)
+            hp = ataque_monstro(bosshp, hp, nível)
+            poc_tu = 0
+        else:
+            qtd, hp = usar_pocao(bosshp, hp, nível, qtd, ataque_monstro)
+            poc_tu += 1
         
 #Luta = Sem Resposta
 
