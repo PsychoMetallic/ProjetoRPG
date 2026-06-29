@@ -21,6 +21,8 @@ class RPGGuildaGUI:
         self.qtd_pocao = 0
         self.pocao_preco = 50
         self.bosshp = 0
+        self.hp_max = self.hp
+        self.bosshp_max = 0
         self.estado = "inicio"
 
         self.criar_tela()
@@ -50,6 +52,12 @@ class RPGGuildaGUI:
             justify="left",
         )
         self.status_label.pack(padx=10, pady=8, anchor="w")
+
+        self.barras_frame = tk.Frame(self.status_frame, bg="#202020")
+        self.barras_frame.pack(fill="x", padx=10, pady=(0, 10))
+
+        self.player_barra = self.criar_barra_vida(self.barras_frame, "⚔️ Jogador", "#c0392b")
+        self.boss_barra = self.criar_barra_vida(self.barras_frame, "🐉 Dragão", "#8e44ad")
 
         self.texto = tk.Text(
             self.root,
@@ -97,14 +105,61 @@ class RPGGuildaGUI:
         btn.pack(side="left", padx=5, pady=5)
         return btn
 
+    def criar_barra_vida(self, parent, titulo, cor):
+        frame = tk.Frame(parent, bg="#202020")
+        frame.pack(fill="x", pady=3)
+
+        label = tk.Label(
+            frame,
+            text=f"{titulo}: 0/0",
+            font=("Consolas", 11, "bold"),
+            bg="#202020",
+            fg="white",
+            anchor="w",
+        )
+        label.pack(fill="x")
+
+        canvas = tk.Canvas(frame, height=22, bg="#101010", highlightthickness=1, highlightbackground="#444444")
+        canvas.pack(fill="x")
+
+        barra = {"label": label, "canvas": canvas, "cor": cor, "titulo": titulo}
+        canvas.bind("<Configure>", lambda event: self.atualizar_status())
+        return barra
+
+    def atualizar_barra_vida(self, barra, atual, maximo):
+        canvas = barra["canvas"]
+        canvas.delete("all")
+
+        maximo = max(1, int(maximo))
+        atual = max(0, min(int(atual), maximo))
+        proporcao = atual / maximo
+
+        largura = max(canvas.winfo_width(), 1)
+        altura = max(canvas.winfo_height(), 22)
+        preenchido = int(largura * proporcao)
+
+        canvas.create_rectangle(0, 0, largura, altura, fill="#2b2b2b", width=0)
+        canvas.create_rectangle(0, 0, preenchido, altura, fill=barra["cor"], width=0)
+        canvas.create_text(
+            largura // 2,
+            altura // 2,
+            text=f"{atual}/{maximo}",
+            fill="white",
+            font=("Consolas", 10, "bold"),
+        )
+
+        barra["label"].config(text=f"{barra['titulo']}: {atual}/{maximo}")
+
     def atualizar_status(self):
         self.status_label.config(
             text=(
                 f"👤 Nome: {self.nome or '-'} | Classe: {self.classe.capitalize() or '-'} | Idade: {self.idade}\n"
-                f"⭐ Nível: {self.nivel} | ❤️ HP: {int(self.hp)} | 🔮 Mana: {int(self.mana)} | 💰 Dinheiro: R${round(self.reais, 2)} | 🧪 Poções: {self.qtd_pocao}\n"
-                f"🐉 HP do Dragão: {int(self.bosshp) if self.bosshp > 0 else '-'}"
+                f"⭐ Nível: {self.nivel} | 🔮 Mana: {int(self.mana)} | 💰 Dinheiro: R${round(self.reais, 2)} | 🧪 Poções: {self.qtd_pocao}"
             )
         )
+
+        self.atualizar_barra_vida(self.player_barra, self.hp, self.hp_max)
+        self.atualizar_barra_vida(self.boss_barra, self.bosshp, self.bosshp_max if self.bosshp_max > 0 else 1)
 
     def tela_inicio(self):
         self.limpar_texto()
@@ -147,6 +202,7 @@ class RPGGuildaGUI:
         self.classe = classe
         self.nivel = 1
         self.hp = self.nivel * 50
+        self.hp_max = self.hp
         self.mana = self.nivel * 75
         self.reais = self.nivel * 100
         self.limpar_texto()
@@ -187,6 +243,7 @@ class RPGGuildaGUI:
 
         self.idade += anos
         self.hp = self.nivel * 50
+        self.hp_max = self.hp
         self.mana = self.nivel * 75
         self.reais = self.nivel * 100
         self.atualizar_status()
@@ -221,6 +278,7 @@ class RPGGuildaGUI:
         self.limpar_texto()
         self.limpar_botoes()
         self.bosshp = self.nivel * 100
+        self.bosshp_max = self.bosshp
         self.escrever("🐉 Oh não! Um Dragão apareceu e está atacando o vilarejo!")
         self.atualizar_status()
         self.tela_batalha()
@@ -257,10 +315,10 @@ class RPGGuildaGUI:
             self.hp -= dano
             self.escrever(f"O Dragão acertou em cheio! Você tomou {dano} de dano.")
 
-    def rolar_ataque(self, chance_erro=20):
-        sorte = random.randint(1, 100)
-        self.escrever(f"Você rolou um D100: {sorte}")
-        return sorte > chance_erro
+    def rolar_d20(self):
+        d20 = random.randint(1, 20)
+        self.escrever(f"Você rolou um D20: {d20}")
+        return d20
 
     def acao_atacar(self):
         if self.classe == "mago":
@@ -269,27 +327,25 @@ class RPGGuildaGUI:
             self.tela_batalha()
             return
 
-        if not self.rolar_ataque(20):
+        d20 = self.rolar_d20()
+
+        if d20 == 20:
+            dano = 10000
+            self.escrever("Ataque crítico! Você acertou um golpe mortal no Dragão!")
+        elif d20 >= 15:
+            dano = self.nivel * 35
+            self.escrever(f"Você acertou um golpe profundo, causando {dano} de dano!")
+        elif d20 >= 10:
+            dano = self.nivel * 25
+            self.escrever(f"Você acertou vários golpes rápidos, causando {dano} de dano!")
+        elif d20 >= 5:
+            dano = self.nivel * 10
+            self.escrever(f"Você acertou a perna dele, causando {dano} de dano!")
+        else:
             self.escrever("Você errou o ataque!")
             self.contra_ataque_dragao()
             self.tela_batalha()
             return
-
-        d20 = random.randint(1, 20)
-        self.escrever(f"Você rolou um D20: {d20}")
-
-        if d20 >= 14:
-            dano = 10000
-            self.escrever("Ataque crítico! Você acertou um golpe mortal no Dragão!")
-        elif d20 >= 10:
-            dano = self.nivel * 35
-            self.escrever(f"Você acertou um golpe profundo, causando {dano} de dano!")
-        elif d20 >= 5:
-            dano = self.nivel * 25
-            self.escrever(f"Você acertou vários golpes rápidos, causando {dano} de dano!")
-        else:
-            dano = self.nivel * 10
-            self.escrever(f"Você acertou a perna dele, causando {dano} de dano!")
 
         self.bosshp -= dano
         self.contra_ataque_dragao()
@@ -320,23 +376,21 @@ class RPGGuildaGUI:
             self.tela_batalha()
             return
 
-        if not self.rolar_ataque(10):
+        d20 = self.rolar_d20()
+        self.mana -= custo
+
+        if d20 <= 4:
             self.escrever("Você errou a magia!")
             self.contra_ataque_dragao()
             self.tela_batalha()
             return
-
-        d20 = random.randint(1, 20)
-        self.escrever(f"Você rolou um D20: {d20}")
-        self.mana -= custo
-
-        if magia == "telecinese" and d20 >= 14:
+        elif magia == "telecinese" and d20 == 20:
             dano = 10000
             self.escrever("Você esmagou o Dragão com telecinese. Foi um golpe mortal!")
-        elif d20 >= 10:
+        elif d20 >= 15:
             dano = self.nivel * 35
             self.escrever(f"{nomes[magia]} causou {dano} de dano!")
-        elif d20 >= 5:
+        elif d20 >= 10:
             dano = self.nivel * 25
             self.escrever(f"{nomes[magia]} acertou o Dragão e causou {dano} de dano!")
         else:
@@ -349,15 +403,14 @@ class RPGGuildaGUI:
         self.tela_batalha()
 
     def acao_bomba(self):
-        if not self.rolar_ataque(30):
+        d20 = self.rolar_d20()
+
+        if d20 <= 4:
             self.escrever("BOOM! Você errou a bomba!")
             self.contra_ataque_dragao()
             self.tela_batalha()
             return
-
-        d20 = random.randint(1, 20)
-        self.escrever(f"Você rolou um D20: {d20}")
-        if d20 <= 10:
+        elif d20 >= 15:
             dano = self.nivel * 50
             self.escrever(f"A bomba explodiu na garganta do Dragão! Dano: {dano}")
         else:
@@ -369,7 +422,7 @@ class RPGGuildaGUI:
         self.tela_batalha()
 
     def acao_pocao(self):
-        hp_max = self.nivel * 50
+        hp_max = self.hp_max
         if self.qtd_pocao <= 0:
             self.escrever("Você não tem poções no inventário!")
             self.contra_ataque_dragao()
@@ -383,9 +436,8 @@ class RPGGuildaGUI:
         self.tela_batalha()
 
     def acao_fugir(self):
-        sorte = random.randint(1, 100)
-        self.escrever(f"Você rolou um D100 para fugir: {sorte}")
-        if sorte <= 60:
+        d20 = self.rolar_d20()
+        if d20 <= 12:
             self.hp = 0
             self.escrever("Sua tentativa de fuga falhou. O Dragão te derrotou!")
         else:
@@ -419,10 +471,12 @@ class RPGGuildaGUI:
         self.classe = ""
         self.nivel = 1
         self.hp = 50
+        self.hp_max = 50
         self.mana = 75
         self.reais = 100
         self.qtd_pocao = 0
         self.bosshp = 0
+        self.bosshp_max = 0
         self.tela_inicio()
 
 
