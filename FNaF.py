@@ -5,8 +5,7 @@ import os
 energia = 100
 turnos = 0
 hora = 0
-porta_esquerda = False
-porta_direita = False
+porta_esquerda = porta_direita = False
 jogador_vivo = True
 
 animatronics = {
@@ -40,7 +39,6 @@ def status():
 
 def mostrar_cameras():
     global energia
-
     if energia <= 0:
         return
 
@@ -54,57 +52,38 @@ def mostrar_cameras():
         print(f"{nome}: {local}")
 
     print("-" * 30)
-
     input("\nPressione ENTER para fechar as câmeras...")
 
 def mover_animatronics():
-    for nome in animatronics:
-        posicao_atual = caminhos[nome].index(animatronics[nome])
+    for nome, caminho in caminhos.items():
+        pos = caminho.index(animatronics[nome])
 
-        # Se chegou na porta, não avança mais
-        if animatronics[nome] == "Porta Esquerda":
-            if porta_esquerda:
+        if "Porta" in animatronics[nome]:
+            porta = porta_esquerda if "Esquerda" in animatronics[nome] else porta_direita
+            if porta:
                 animatronics[nome] = "Palco"
             continue
 
-        if animatronics[nome] == "Porta Direita":
-            if porta_direita:
-                animatronics[nome] = "Palco"
-            continue
-
-        # Chance de andar
-        if random.randint(1, 100) <= 45:
-            if posicao_atual < len(caminhos[nome]) - 1:
-                animatronics[nome] = caminhos[nome][posicao_atual + 1]
+        if random.randint(1, 100) <= 45 and pos < len(caminho) - 1:
+            animatronics[nome] = caminho[pos + 1]
 
 def verificar_ataque():
-    global jogador_vivo
-
-    if animatronics["Foxy"] == "Porta Esquerda":
-        if not porta_esquerda:
-            jumpscare("Foxy")
-        else:
-            animatronics["Foxy"] = "Palco"
-
-    if animatronics["Bonnie"] == "Porta Esquerda":
-        if not porta_esquerda:
-            jumpscare("Bonnie")
-        else:
-            animatronics["Bonnie"] = "Palco"
-
-    if animatronics["Chica"] == "Porta Direita":
-        if not porta_direita:
-            jumpscare("Chica")
-        else:
-            animatronics["Chica"] = "Palco"
+    for nome, lado in [("Foxy", "esquerda"), ("Bonnie", "esquerda"), ("Chica", "direita")]:
+        if animatronics[nome] == f"Porta {lado.capitalize()}":
+            if (lado == "esquerda" and not porta_esquerda) or (lado == "direita" and not porta_direita):
+                jumpscare(nome)
+            else:
+                animatronics[nome] = "Palco"
 
 def jumpscare(nome):
     global jogador_vivo
+
     limpar()
     tp("...")
     time.sleep(1)
     tp(f"{nome} entrou na sala!")
     time.sleep(1)
+
     print("""
 ██╗    ██╗ █████╗ ███████╗████████╗███████╗██████╗ 
 ██║    ██║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
@@ -113,18 +92,12 @@ def jumpscare(nome):
 ╚███╔███╔╝██║  ██║███████║   ██║   ███████╗██████╔╝
  ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═════╝ 
 """)
+
     jogador_vivo = False
 
 def gastar_energia():
     global energia
-
-    energia -= 2
-
-    if porta_esquerda:
-        energia -= 4
-
-    if porta_direita:
-        energia -= 4
+    energia -= 2 + (4 if porta_esquerda else 0) + (4 if porta_direita else 0)
 
 def menu():
     print("""
@@ -180,12 +153,14 @@ O que você deseja fazer?
 
         else:
             print("Comando inválido!")
+
         verificar_ataque()
 
         time.sleep(1)
 
         mover_animatronics()
         gastar_energia()
+
         turnos += 1
 
         if energia <= 0:
@@ -204,14 +179,17 @@ O que você deseja fazer?
 
     if jogador_vivo and hora >= 6:
         limpar()
+
         print("""
  ██████╗  █████╗ ███╗   ██╗██╗  ██╗ ██████╗ ██╗   ██╗
 ██╔════╝ ██╔══██╗████╗  ██║██║  ██║██╔═══██╗██║   ██║
 ██║  ███╗███████║██╔██╗ ██║███████║██║   ██║██║   ██║
 ██║   ██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██║   ██║
 ╚██████╔╝██║  ██║██║ ╚████║██║  ██║╚██████╔╝╚██████╔╝
- ╚═════╝ ╚═╝  ╚═╝╚═╝   ╚═══╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ 
+ ╚═════╝ ╚═╝  ╚═╝╚═╝   ╚═══╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝
 """)
+
         print("Você sobreviveu até 6AM! 🎉")
+
 
 jogar()

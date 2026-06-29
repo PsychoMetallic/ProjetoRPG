@@ -1,6 +1,7 @@
 import random
 import time
 import threading
+import os
 
 def input(*args, **kwargs):
     texto = " ".join(map(str, args))
@@ -28,6 +29,7 @@ def print(*args, **kwargs):
     __builtins__.print(end=end)
     
 def loja_inv(amarelo, branco, vermelho, pocao, reais, qtd):
+    global nível
 
     print(f"{amarelo}Comerciante:{branco} Bem vindo a Loja da Guilda, temos essa {vermelho}Poção{branco} que custa R${pocao}!")
     loja = input('''Você quer Comprar? Y/N:
@@ -41,7 +43,8 @@ def loja_inv(amarelo, branco, vermelho, pocao, reais, qtd):
             
         
         else:
-            qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
+            max_poc = nível * 2
+            qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja? (Máx: {max_poc})
 >> '''))
             venda = qtd * pocao
             
@@ -56,7 +59,8 @@ def loja_inv(amarelo, branco, vermelho, pocao, reais, qtd):
                 while reais < venda:
                     print(f"Dinheiro Insuficiente! Tentando Comprar {vermelho}{qtd} Poções{branco}, mas Você só tem {amarelo}{reais} Reais!{branco}")
                     print()
-                    qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja?
+                    max_poc = nível * 2
+                    qtd = int(input(f'''{amarelo}Comerciante:{branco} Quantas {vermelho}Poções{branco} Você Deseja? (Máx: {max_poc})
 >> '''))
                     venda = qtd * pocao
                     print(cl)
@@ -114,6 +118,9 @@ def loja_inv(amarelo, branco, vermelho, pocao, reais, qtd):
 qtd = 0
 pocao = 50
 
+def limpar():
+    os.system("cls" if os.name == "nt" else "clear")
+
 cl = "-"*140
 
 # Cores do Terminal
@@ -140,12 +147,12 @@ while True:
     print(cl)
 
     if idade < 14:
-        print("Você é Muito Novo(a) para Entrar na Guilda!")
+        print("\nVocê é Muito Novo(a) para Entrar na Guilda!")
         print(cl)
         continue
     
     elif idade > 40:
-        print("Você já está Muito Velho(a) para Entrar na Guilda")
+        print("\nVocê já está Muito Velho(a) para Entrar na Guilda")
         print(cl)
         continue
 
@@ -186,7 +193,7 @@ print(cl)
 # Treinamento de 3 Anos
 while True:
 
-    train = int(input('''Como qualquer Iniciante Minimamente Inteligente, você decide Treinar, Mas por quantos Anos?
+    train = int(input('''Como qualquer Iniciante você decide Treinar, Mas por quantos Anos?
 >> '''))
     if train >= 2 and train <= 16:
         anos = train
@@ -214,6 +221,7 @@ while True:
         print(f"Idade Atual: {idade}")
         print(cl)
         time.sleep(2)
+        input("\nAperte ENTER Para Continuar: ")
         break
 
     elif train <= 1:
@@ -250,8 +258,10 @@ while True:
         print(f"Idade Atual: {idade}")
         time.sleep(2)
         print(cl)
+        input("\nAperte ENTER Para Continuar: ")
         break
-    
+
+limpar()
 qtd, reais = loja_inv(amarelo, branco, vermelho, pocao, reais, qtd)
 
 # Definições da Batalha
@@ -267,8 +277,6 @@ def ataque_monstro(bosshp ,hp, nível):
             print()
             print(f"o {roxo}Dragão{branco} tentou Contra-Atacar mas Você Desviou!")
             input("\nAperte ENTER Para Continuar: ")
-            print()
-            print(cl)
 
         elif cnt >= 6:
             print()
@@ -277,8 +285,6 @@ def ataque_monstro(bosshp ,hp, nível):
             print(f"o {roxo}Dragão{branco} Contra-Atacou e pegou de Raspão!")
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
             input("\nAperte ENTER Para Continuar: ")
-            print()
-            print(cl)
 
         elif cnt >= 3:
             print()
@@ -287,8 +293,7 @@ def ataque_monstro(bosshp ,hp, nível):
             hp = hp - dn
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
             input("\nAperte ENTER Para Continuar: ")
-            print()
-            print(cl)
+            
 
         else:
             print()
@@ -297,8 +302,7 @@ def ataque_monstro(bosshp ,hp, nível):
             hp = hp - dn
             print(f"Você Tomou {azul}{dn} de Dano{branco}")
             input("\nAperte ENTER Para Continuar: ")
-            print()
-            print(cl)
+            
     return hp
 
 def ataque_corpo(bosshp, hp, nível, ataque_monstro):
@@ -490,7 +494,7 @@ Número: {sorte}''')
             bosshp -= dano
             mana -= gasto
 
-            print(f"💥 Você esmagou o Dragão com telecinese!")
+            print(f"Você esmagou o Dragão com telecinese!")
             print(f"Dano: {dano} | Mana: -{gasto}")
 
         elif d20 >= 10:
@@ -500,7 +504,7 @@ Número: {sorte}''')
             bosshp -= dano
             mana -= gasto
 
-            print(f"🪨 Você prensou o Dragão com pedras!")
+            print(f"Você prensou o Dragão com pedras!")
             print(f"Dano: {dano} | Mana: -{gasto}")
 
         else:
@@ -525,7 +529,7 @@ Número: {sorte}''')
             bosshp -= dano
             mana -= gasto
 
-            print(f"🔥 Bola de fogo acertou o Dragão!")
+            print(f"Bola de fogo acertou o Dragão!")
             print(f"Dano: {dano} | Mana: -{gasto}")
 
         else:
@@ -550,7 +554,7 @@ Número: {sorte}''')
             bosshp -= dano
             mana -= gasto
 
-            print("❄ Você congelou o Dragão parcialmente!")
+            print("Você congelou o Dragão parcialmente!")
             print(f"Dano: {dano} | Mana: -{gasto}")
 
         else:
@@ -685,7 +689,8 @@ def usar_pocao(bosshp, hp, nível, qtd, ataque_monstro):
         print(cl)
 
     else:
-        cura = 200
+        porc = 0.10
+        cura *= porc
         hp += cura
 
         if hp > hp_max:
@@ -706,8 +711,10 @@ def usar_pocao(bosshp, hp, nível, qtd, ataque_monstro):
 bosshp = nível * 100
 print(f"Oh Não, Apareceu um {roxo}Dragão {branco}e Ele está Atacando o Vilarejo!")
 poc_tu = 0
+input("\nAperte ENTER Para Continuar: ")
 
 while bosshp > 0 and hp > 0:
+    limpar()
     print(f"A Vida dele está em: {roxo}{bosshp}{branco}")
     print(f"Sua Vida está em {azul}{int(hp)}{branco}")
     print()
@@ -810,16 +817,9 @@ while bosshp > 0 and hp > 0:
 
         hp = ataque_monstro(bosshp, hp, nível)
         
-# Vitória
-
-if bosshp <= 0 and hp <= 0:
-    print()
-    print("O Dragão Morreu mas ele conseguiu Te Matar junto com Ele!")
-    print(f"{vermelho}GAME OVER???{branco}")
-    print()
-    print(cl)
+# Final da Batalha
       
-elif bosshp <= 0:
+if bosshp <= 0:
     print()
     print(f"O {roxo}Dragão {branco}está Morto, Você salvou o Vilarejo!!!")
     print()
@@ -834,8 +834,8 @@ elif bosshp <= 0:
     print()
 
     print(f"Seu saldo Agora é:{amarelo}", round(reais, 2), "Reais")
-    print()
-    print(f"{branco}-"*140)
+    print({branco})
+    print(cl)
 
 elif hp <= 0:
     print()
